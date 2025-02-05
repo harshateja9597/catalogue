@@ -7,6 +7,7 @@ pipeline {
 
     environment {
         packageversion = ''
+        nexusURL = 'http://52.90.4.99:8081/repository/catalogue/'
     }
 
     options {
@@ -39,6 +40,26 @@ pipeline {
                     ls -ltra 
                     
                 """
+            }
+        }
+        stage('publish artifact') {
+            steps {
+                 nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: "${nexusURL}",
+                    groupId: 'com.roboshop',
+                    version: "${packageversion}",
+                    repository: 'catalogue',
+                    credentialsId: 'nexus-authentication',
+                    artifacts: [
+                        [artifactId: 'catalogue',
+                        classifier: '',
+                        file: 'catalogue.zip',
+                        type: 'zip']
+                    ]
+                )
+                
             }
         }
     }
