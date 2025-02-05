@@ -31,9 +31,13 @@ pipeline {
                """
             }
         }
-        stage('Deploy') {
+        stage('Build') {
             steps {
-                echo 'Deploying....'
+                sh """
+                    ls -la
+                    zip -r catalogue.zip ./* -x ",*" -x ".zip"
+                    ls -ltra 
+                """
             }
         }
     }
@@ -41,6 +45,7 @@ pipeline {
     post { 
         always { 
             echo 'I will always say Hello again!'
+            deleteDir()
         }
         failure {
             echo 'It runs when the pipeline fails'
