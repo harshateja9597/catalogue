@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         packageversion = ''
-        nexusURL = 'http://52.90.4.99:8081/repository/catalogue/'
+        nexusURL = '52.90.4.99:8081/repository/catalogue/'
     }
 
     options {
