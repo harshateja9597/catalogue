@@ -1,26 +1,26 @@
 pipeline {
     agent {
         node {
-           label 'linux' 
+            label 'linux'
         }
     }
-    environment{
+
+    environment {
         packageversion = ''
     }
-    }
-    options{
+
+    options {
         timeout(time: 1, unit: 'HOURS')
         disableConcurrentBuilds()
-        
     }
+
     stages {
-        stage('get the version') {
+        stage('Get the Version') {
             steps {
                 script {
-                    def packagejson = readjson file: 'package.json'
-                    packageversion = packagejson.version
-                    echo "packageversion is : $packageversion"
-
+                    def packagejson = readJSON file: 'package.json'  
+                    env.packageversion = packagejson.version 
+                    echo "Package version is: ${env.packageversion}" 
                 }
             }
         }
@@ -32,20 +32,19 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-               
             }
         }
-        
     }
+
     post { 
         always { 
             echo 'I will always say Hello again!'
         }
-        failure{
-            echo 'it runs when pipeline fails'
+        failure {
+            echo 'It runs when the pipeline fails'
         }
-        success{
-            echo 'pipeline runs successfully'
+        success {
+            echo 'Pipeline runs successfully'
         }
     }
 }
